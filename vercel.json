@@ -1,7 +1,6 @@
 {
     "functions": {
       "api/transcribe.js": {
-        "runtime": "nodejs18.x"
       }
     }
   }
