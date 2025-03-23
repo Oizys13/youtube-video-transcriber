@@ -1,7 +1,8 @@
 {
     "functions": {
       "api/transcribe.js": {
-        "runtime": "nodejs22.x"
+        "memory": 3009,
+      "maxDuration": 30
       }
     }
   }
