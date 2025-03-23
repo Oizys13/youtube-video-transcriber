@@ -1,6 +1,7 @@
 {
     "functions": {
       "api/transcribe.js": {
+        "runtime": "nodejs22.x"
       }
     }
   }
