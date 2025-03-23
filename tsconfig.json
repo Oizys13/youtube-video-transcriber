@@ -10,6 +10,6 @@
     "skipLibCheck": true,                 // Skips type checking for declaration files
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "src/types/cors.d.ts"],  // Add the custom declaration file here
+  "include": ["src/**/*", "src/types/cors.d.ts", "api"],  // Add the custom declaration file here
   "exclude": ["node_modules"]
 }
