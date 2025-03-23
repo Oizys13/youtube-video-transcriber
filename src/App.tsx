@@ -29,6 +29,8 @@ function App() {
       };
     }
 
+    const API_BASE_URL = '/api';
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
@@ -48,21 +50,22 @@ function App() {
           throw new Error('Invalid YouTube URL');
         }
 
-        const transcript: TranscriptResponse = await axios.post('http://localhost:3000/transcript', { videoId });
-        setTranscription(transcript.data.text);
+        const transcriptResponse: TranscriptResponse = await axios.post(`${API_BASE_URL}/transcript`, { videoId });
+
+        setTranscription(transcriptResponse.data.text);
 
         // Add your summarization logic here
-        const transcription_text = transcript.data.text;
+        const transcription_text = transcriptResponse.data.text;
         if (!transcription_text || transcription_text.trim() === '') {
           throw new Error('Transcription text is empty or invalid.');
         }
-        console.log(transcription_text);
 
-        const summary: SummaryResponse = await axios.post('http://localhost:3000/summarize', {
-          text: transcription_text  // Use 'text' instead of 'transcription_text' if required
-        });
-        console.log(summary.data.summary);
-        setSummary(summary.data.summary);
+
+        const summaryResponse: SummaryResponse = await axios.post(`${API_BASE_URL}/summarize`, { text: transcription_text });
+
+        
+        console.log(summaryResponse.data.summary);
+        setSummary(summaryResponse.data.summary);
 
       } catch (error) {
         console.error('Transcription failed:', error);
