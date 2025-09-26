@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import YouTubeTranscriptAPI from 'youtube-transcript-api';
 import {
   Youtube,
   FileText,
@@ -17,63 +16,59 @@ function App() {
   const [transcription, setTranscription] = useState('');
   const [summary, setSummary] = useState('');
 
-    interface TranscriptResponse {
-      data: {
-        text: string;
-      };
-    }
-
-    interface SummaryResponse {
-      data: {
-        summary: string;
-      };
-    }
-
-    const API_BASE_URL = '/api';
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-
-      if (!url) {
-        setError('Please enter a YouTube URL');
-        return;
-      }
-
-      setIsProcessing(true);
-      setError('');
-      setTranscription('');
-      setSummary('');
-
-      try {
-        const videoId = extractVideoId(url);
-        if (!videoId) {
-          throw new Error('Invalid YouTube URL');
-        }
-
-        const transcriptResponse: TranscriptResponse = await axios.post(`${API_BASE_URL}/transcript`, { videoId });
-
-        setTranscription(transcriptResponse.data.text);
-
-        // Add your summarization logic here
-        const transcription_text = transcriptResponse.data.text;
-        if (!transcription_text || transcription_text.trim() === '') {
-          throw new Error('Transcription text is empty or invalid.');
-        }
-
-
-        const summaryResponse: SummaryResponse = await axios.post(`${API_BASE_URL}/summarize`, { text: transcription_text });
-
-        
-        console.log(summaryResponse.data.summary);
-        setSummary(summaryResponse.data.summary);
-
-      } catch (error) {
-        console.error('Transcription failed:', error);
-        setError('An error occurred while processing the video.');
-      } finally {
-        setIsProcessing(false);
-      }
+  interface TranscriptResponse {
+    data: {
+      text: string;
     };
+  }
+
+  interface SummaryResponse {
+    data: {
+      summary: string;
+    };
+  }
+
+  // Use environment variable for API base URL, fallback to /api for proxy
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!url) {
+      setError('Please enter a YouTube URL');
+      return;
+    }
+
+    setIsProcessing(true);
+    setError('');
+    setTranscription('');
+    setSummary('');
+
+    try {
+      const videoId = extractVideoId(url);
+      if (!videoId) {
+        throw new Error('Invalid YouTube URL');
+      }
+
+      const transcriptResponse: TranscriptResponse = await axios.post(`${API_BASE_URL}/transcript`, { videoId });
+      setTranscription(transcriptResponse.data.text);
+
+      const transcription_text = transcriptResponse.data.text;
+      if (!transcription_text || transcription_text.trim() === '') {
+        throw new Error('Transcription text is empty or invalid.');
+      }
+
+      const summaryResponse: SummaryResponse = await axios.post(`${API_BASE_URL}/summarize`, { text: transcription_text });
+      console.log(summaryResponse.data.summary);
+      setSummary(summaryResponse.data.summary);
+
+    } catch (error) {
+      console.error('Processing failed:', error);
+      setError('An error occurred while processing the video.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   // Function to extract YouTube video ID from various URL formats
   interface ExtractVideoId {

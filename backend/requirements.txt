@@ -1,0 +1,7 @@
+django
+youtube-transcript-api
+requests
+python-dotenv
+gunicorn
+webvtt-py
+yt-dlp

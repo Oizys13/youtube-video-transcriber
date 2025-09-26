@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es6",                     // Targets modern JavaScript
-    "module": "commonjs",                 // CommonJS for server-side Node.js compatibility
-    "esModuleInterop": true,              // Enables compatibility between ESModules and CommonJS
-    "allowSyntheticDefaultImports": true, // Enables importing CommonJS modules as ES6 default imports
-    "moduleResolution": "node",           // Helps TypeScript resolve modules like Node.js
-    "strict": true,                       // Enables strict type-checking options
-    "jsx": "react-jsx",                  // Only required for React projects, if applicable
-    "skipLibCheck": true,                 // Skips type checking for declaration files
-    "forceConsistentCasingInFileNames": true
-  },
+      "target": "esnext",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "ignoreDeprecations": "6.0",
+      "jsx": "react-jsx",
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["src/*"]
+      }
+    },
   "include": ["src/**/*", "src/types/cors.d.ts", "api"],  // Add the custom declaration file here
   "exclude": ["node_modules"]
 }
